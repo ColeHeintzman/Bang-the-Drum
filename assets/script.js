@@ -1,15 +1,26 @@
- // Initialize and add the map
- function initMap() {
-    // The location of Uluru
-    const uluru = { lat: 36.1627, lng: -86.7816 };
-    // The map, centered at Uluru
-    const map = new google.maps.Map(document.getElementById("map"), {
-      zoom: 4,
-      center: uluru,
-    });
-    // The marker, positioned at Uluru
-    const marker = new google.maps.Marker({
-      position: uluru,
-      map: map,
-    });
+var dateFormEl = document.querySelector("#city-form");
+
+
+var formSubmitHandler = function(event) {
+    event.preventDefault();
+    var date = document.querySelector("#search-date").value;
+    console.log(date);
+    if (date) {
+      //console.log(queryCurrentURL);
+      getHistoricalEvents(date);
+      inputFormEl.value="";
+    }else{
+      alert("Please enter a Valid Date")
+    }
   }
+
+ var getHistoricalEvents = function (date) {
+    var historyURL = "https://api.wikimedia.org/feed/v1/wikipedia/en/onthisday/all/" + date;
+    fetch(historyURL).then(function(response) {
+        response.json().then(function(data) {
+            console.log(data)
+        });
+    
+    });
+}
+ getHistoricalEvents();
