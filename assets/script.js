@@ -15,7 +15,7 @@ var formSubmitHandler = function (event) {
     //console.log(queryCurrentURL);
     //example(dateVal);
     getHistoricalEvents(dateVal);   
-    getCoordinates(dateVal, 37206);     // TODO:  replace numbers with variable once formHandler is finished
+    getCoordinates(dateVal, 90210);           // TODO:  replace numbers with variable once formHandler is finished 37206
   } else {
     alert("Please enter a Valid Date")
   }
@@ -52,14 +52,35 @@ var getHistoricalEvents = function (date) {
 function timeZoneConverter (longitude) {
   // returns an amount to subtract from sunrise/sunset in UTC time returned from API based on timezone of coordinates provided by user
   // each time zone represents 15 degrees longitude
-  var offset = Math.trunc(longitude/15);
+  var offset = Math.round(longitude/15);
   return offset;
 };  // end function timeZoneConverter
 
 
 function getHours(item, zone) {
-  item.slice(0,1);                                        // keep the hours, remove the rest of the time stamp from the array parameter
-  var temp = parseInt(item) + zone;                       // convert the hours portion of the time in integer and adjust the time zone                    
+  
+                      
+  var pm = false;
+
+  if (item.includes("P")) {
+      pm = true;
+    }
+
+  var temp = parseInt(item);
+  
+  if (pm) {
+    var temp = temp + 12;
+    }
+  
+  temp = temp + zone;
+
+  if (temp >= 12) {                // convert back to 12 hour format
+    temp = temp -12;
+  }
+  else if (temp < 0)  {
+    temp = temp + 12;
+  }
+                         // convert the hours portion of the time in integer and adjust the time zone                    
   var hours = JSON.stringify(temp);                       // return the hours to string
   return hours;
 
@@ -76,14 +97,31 @@ function printSunshine (facts, locale) {
     } // for
 
 }; // end function printSunShine
+function findChar (charArray) {
+  
+  var searchChar = ":";
+
+  for (i=0; i < charArray.length; i++) {           // where is the first colon
+    if (charArray[i] === searchChar) {
+      var index = i;
+      break;
+    }
+  } 
+  return index;
+
+}; // end function findChar
 
 function createSunshine (data, points) {
   
   var zone = timeZoneConverter(points.long);
 
+  var upSlice = findChar (data.results.sunrise);
+ 
+  var downSlice = findChar (data.results.sunset);
+ 
   var sunObj = [
-    "Sunrise: " + getHours(data.results.sunrise, zone) + data.results.sunrise.slice(2,-2) + "AM",
-    "Sunset: " + getHours(data.results.sunset, zone) + data.results.sunset.slice(2,-2) + "PM",
+    "Sunrise: " + getHours(data.results.sunrise, zone) + data.results.sunrise.slice(upSlice, -upSlice) + "AM",
+    "Sunset: " + getHours(data.results.sunset, zone) + data.results.sunset.slice(downSlice, -downSlice) + "PM",
     "Hours of Daylight: " + data.results.day_length ];
 
     printSunshine(sunObj, points);
