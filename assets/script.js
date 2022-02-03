@@ -2,6 +2,7 @@ var dateFormEl = document.querySelector("#input-form");
 var getSome = document.querySelector("#get-some");
 var dateInput = document.querySelector("#searched-date");
 var historyContainer = document.querySelector("#location-date-weather")
+var zipVal = document.querySelector('#searched-location');
 // var example = function (date) {
 //   console.log(date)
 //   getHistoricalEvents(date)
@@ -11,11 +12,15 @@ var formSubmitHandler = function (event) {
   event.preventDefault();
   var dateVal = dateInput.value;
   console.log(dateVal);
+  var zipper = zipVal.value;
+  console.log(zipper);
   if (dateVal) {
     //console.log(queryCurrentURL);
     //example(dateVal);
-    getHistoricalEvents(dateVal);   
-    getCoordinates(dateVal, 90210);           // TODO:  replace numbers with variable once formHandler is finished 37206
+    getHistoricalEvents(dateVal); 
+    getCoordinates(dateVal, zipper);
+    console.log(zipper);
+    console.log(dateVal);         // TODO:  replace numbers with variable once formHandler is finished 37206
   } else {
     alert("Please enter a Valid Date")
   }
@@ -87,6 +92,7 @@ function getHours(item, zone) {
 }; // end function getHours
 
 function printSunshine (facts, locale) {
+    console.log(facts, locale);
     var heading = document.createElement("h3");           // create an element for the address heading
     heading.textContent = locale.address;                 // the address the user specifiect via zip code
     historyContainer.appendChild(heading);                // add the address to the HTML
@@ -146,7 +152,7 @@ function getSunshine (date, pointsObj) {
 function getCoordinates (date, zip) {
   
   var url = 'https://maps.googleapis.com/maps/api/geocode/json?sensor=false&address=' + zip + '&key=AIzaSyD5dYDmJwSLitEhrRLMSrI7Kia3IE7AZ6g';
-  
+  console.log(url);
   // an api to convert zip code to longitute/latitude
 
   fetch (url)
