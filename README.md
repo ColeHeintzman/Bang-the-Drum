@@ -1,8 +1,8 @@
 # **Once Upon a Time**
 
 ## **The Repository**
-### This respository ("bang-the-drum"):  https://github.com/loriful/bang-the-drum
-### Deployment:  https://loriful.github.io/bang-the-drum/
+### This respository ("bang-the-drum"):  https://coleheintzman.github.io/Bang-the-Drum/
+### Deployment:  https://github.com/ColeHeintzman/Bang-the-Drum
 
 
 
