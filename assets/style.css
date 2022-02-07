@@ -51,13 +51,19 @@ header h1 {
     padding: 0;
 }
 
+.if-box {
+    display: flex;
+    flex-direction: column;;
+    margin: 90px 60px;
+}
+
 .input-form {
     display: flex;
     flex-wrap: wrap;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding: 55px;
+    padding: 30px 30px;
     border: 3px solid black;
     border-radius: 12px;
     width: 300px;
@@ -68,6 +74,7 @@ header h1 {
     justify-content: flex-start;
     width: 100%;
 }
+
 .search-1, .search-2 {
     display: flex;
     flex-direction: column;
@@ -93,7 +100,7 @@ header h1 {
     border-radius: 4px;
 }
 
-.btn {
+.btn, .savebtn {
     background-color: var(--blue);
     color: #ffffff;
     font-size: 18px;
@@ -104,7 +111,7 @@ header h1 {
     padding-top: 10px 10px;
 }
 
-.btn:hover {
+.btn:hover, .savebtn:hover {
     cursor: pointer;
     color: #ffffff;
     border: 1.5px solid var(--blue);
@@ -112,7 +119,7 @@ header h1 {
     background-color: var(--gold);
 }
 
-.btn:active {
+.btn:active, .savebtn:active {
     cursor: pointer;
     color: #ffffff;
     border: 1.5px solid #000000;
@@ -126,6 +133,23 @@ header h1 {
 
 }
 
+#historical-weather-container {
+    margin-top: 20px;
+}
+
+li  {
+    list-style: none;
+    margin: 0 20px;
+}
+
+.savebtn {
+    padding: 30px;
+    margin: 0 820px 20px 30px;
+    background-color: green;
+    width: 25%;
+    display: flex;
+}
+
 .weather-display {
     display: flex;
     flex-wrap: wrap;
@@ -135,6 +159,10 @@ header h1 {
     flex: 2 0;
     margin: 7.5%;
     box-shadow:rgba(0, 0, 0, 0.5);
+}
+
+#location-date-weather {
+    padding: 15px;
 }
 
 .selected-location {
@@ -155,21 +183,43 @@ header h1 {
     font-weight: bold;
 }
 
-.selected-date {
+footer {
+    background-color: var(--gold);
+    border: 2px solid var(--blue);
     display: flex;
-    flex-direction: column;
+    flex-wrap: wrap;
+    flex-direction: row;
+    margin-top: 8%;
     justify-content: center;
-    width: 100%;
 }
 
-.searched-date h2 {
-    background-color: var(--gold);
-    border-bottom: 3px solid var(--blue);
-    border-radius: 8px;
-    opacity: .75;
+footer h4 {
+    color: #ffffff;
+    flex-direction: column;
+    justify-content: center;
+    font-size: 18px;
+    width: 30%;
     text-align: center;
-    padding: 2% 25% 2% 25%;
-    font-size: 26px;
-    font-weight: bold;
+    padding: 12px 18px;
+    margin-left: 35px;
 }
+
+footer p {
+    justify-content: center;
+}
+
+.co-name {
+    justify-content: center;
+    color: var(--blue);
+    font-size: 22px;
+}
+
+footer a {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    padding: 20px 20px;
+    align-items: center;
+}
+
 

@@ -3,24 +3,15 @@ var getSome = document.querySelector("#get-some");
 var dateInput = document.querySelector("#searched-date");
 var historyContainer = document.querySelector("#location-date-weather")
 var zipVal = document.querySelector('#searched-location');
-// var example = function (date) {
-//   console.log(date)
-//   getHistoricalEvents(date)
-// }
 
 var formSubmitHandler = function (event) {
   event.preventDefault();
   var dateVal = dateInput.value;
-  console.log(dateVal);
   var zipper = zipVal.value;
-  console.log(zipper);
+  
   if (dateVal) {
-    //console.log(queryCurrentURL);
-    //example(dateVal);
     getHistoricalEvents(dateVal); 
     getCoordinates(dateVal, zipper);
-    console.log(zipper);
-    console.log(dateVal);         // TODO:  replace numbers with variable once formHandler is finished 37206
   } else {
     alert("Please enter a Valid Date")
   }
@@ -34,18 +25,15 @@ var createHistory = function (textYear) {
     p.textContent = textYear.events[i].year
     historyContainer.appendChild(h4)
     historyContainer.appendChild(p)
-
-
   }
 
 }
 
 var getHistoricalEvents = function (date) {
   var historyURL = "https://api.wikimedia.org/feed/v1/wikipedia/en/onthisday/all/" + date;
-  console.log(historyURL)
+  
   fetch(historyURL).then(function (response) {
     response.json().then(function (data) {
-      console.log(data)
       createHistory(data);
       data.events[0].text
     });
@@ -63,36 +51,37 @@ function timeZoneConverter (longitude) {
 
 
 function getHours(item, zone) {
-  
-                      
+                   
   var pm = false;
-
   if (item.includes("P")) {
       pm = true;
     }
-
   var temp = parseInt(item);
-  
+
   if (pm) {
     var temp = temp + 12;
     }
-  
   temp = temp + zone;
-
-  if (temp >= 12) {                // convert back to 12 hour format
+  if (temp >= 12) {                                // convert back to 12 hour format
     temp = temp -12;
   }
   else if (temp < 0)  {
     temp = temp + 12;
   }
-                         // convert the hours portion of the time in integer and adjust the time zone                    
+                                                   // convert the hours portion of the time in integer and adjust the time zone                    
   var hours = JSON.stringify(temp);                       // return the hours to string
   return hours;
 
 }; // end function getHours
 
-function printSunshine (facts, locale) {
-    console.log(facts, locale);
+function saveSunData (where, sunData, date) {
+                                                    // save the data for later use
+    localStorage.setItem("savedSunTimes", date +  where.address + sunData); 
+   
+} // end function saveSunData
+
+function printSunshine (facts, locale, date) {
+ 
     var heading = document.createElement("h3");           // create an element for the address heading
     heading.textContent = locale.address;                 // the address the user specifiect via zip code
     historyContainer.appendChild(heading);                // add the address to the HTML
@@ -101,6 +90,15 @@ function printSunshine (facts, locale) {
         li.textContent = facts[i];
         historyContainer.appendChild(li);
     } // for
+
+    var li = document.createElement("li");
+    li.textContent = "Sunshine facts saved to local storage for later use.";
+    historyContainer.appendChild(li);
+    saveSunData (locale, facts, date);                            
+    // var saveButton = document.createElement("button");
+    // saveButton.className = "savebtn";
+    // saveButton.textContent = "Save sun data?";    
+    // historyContainer.appendChild(saveButton);
 
 }; // end function printSunShine
 function findChar (charArray) {
@@ -117,7 +115,7 @@ function findChar (charArray) {
 
 }; // end function findChar
 
-function createSunshine (data, points) {
+function createSunshine (data, points, date) {
   
   var zone = timeZoneConverter(points.long);
 
@@ -130,8 +128,8 @@ function createSunshine (data, points) {
     "Sunset: " + getHours(data.results.sunset, zone) + data.results.sunset.slice(downSlice, -downSlice) + "PM",
     "Hours of Daylight: " + data.results.day_length ];
 
-    printSunshine(sunObj, points);
-
+    printSunshine(sunObj, points, date);
+  
 };  // end function createSunshine
 
 function getSunshine (date, pointsObj) {
@@ -143,7 +141,7 @@ function getSunshine (date, pointsObj) {
         return response.json();})
       .then(function(data) {
           if (data.status === "OK") {
-              createSunshine(data, pointsObj);                  // handle the data returned by the API
+              createSunshine(data, pointsObj, date);                  // handle the data returned by the API
           } // if
       });   // then
   
@@ -152,7 +150,7 @@ function getSunshine (date, pointsObj) {
 function getCoordinates (date, zip) {
   
   var url = 'https://maps.googleapis.com/maps/api/geocode/json?sensor=false&address=' + zip + '&key=AIzaSyD5dYDmJwSLitEhrRLMSrI7Kia3IE7AZ6g';
-  console.log(url);
+  
   // an api to convert zip code to longitute/latitude
 
   fetch (url)
