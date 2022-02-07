@@ -16,7 +16,7 @@
 ## **The Site View**
 
 <p align="center">
-  <img src="./assets/images/mock-up.png" alt="Web Page Initial View" >
+  <img src="./assets/Images/mock-up.png" alt="Web Page Initial View" >
 </p>
 
 <!-- ## **Resources** -->
